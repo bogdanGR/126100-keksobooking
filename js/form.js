@@ -1,6 +1,6 @@
 'use strict';
 
-var pins = document.querySelectorAll('.pin');
+var pinMap = document.querySelector('.tokyo__pin-map');
 var dialog = document.querySelector('.dialog');
 var disableDialog = dialog.querySelector('.dialog__close');
 
@@ -14,30 +14,53 @@ var formType = noticeForm.querySelector('#type');
 var formRoomNumber = noticeForm.querySelector('#room_number');
 var formCapacity = noticeForm.querySelector('#capacity');
 
+var ENTER_KEY_CODE = 13;
+
+var changeAria = function (element) {
+  var pressed = (element.getAttribute('aria-pressed') === 'true');
+  if (!pressed) {
+    element.setAttribute('aria-pressed', !pressed);
+  }
+};
+var isActivateEvent = function (evt) {
+  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
+};
+pinMap.addEventListener('keydown', function (evt) {
+  if (isActivateEvent(evt)) {
+    var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
+
+    disableActivePin();
+    element.classList.add('pin--active');
+    dialog.style.display = 'block';
+  }
+});
+
 var disableActivePin = function () {
   var activePinNode = document.querySelector('.pin--active');
   if (activePinNode) {
     activePinNode.classList.remove('pin--active');
   }
 };
-var activePin = function (pin) {
-  disableActivePin();
-  pin.classList.add('pin--active');
-  dialog.style.display = 'block';
-};
+pinMap.addEventListener('click', function (evt) {
+  var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
 
-for (var i = 0; i < pins.length; i++) {
-  pins[i].addEventListener('click', function (e) {
-    activePin(e.currentTarget);
-  });
-}
+  disableActivePin();
+  element.classList.add('pin--active');
+  dialog.style.display = 'block';
+});
 
 var closeDialog = function () {
   dialog.style.display = 'none';
   disableActivePin();
+  changeAria(disableDialog);
 };
-
 disableDialog.addEventListener('click', closeDialog);
+
+disableDialog.addEventListener('keydown', function (evt) {
+  if (isActivateEvent(evt)) {
+    closeDialog();
+  }
+});
 
 formTime.addEventListener('change', function () {
   formTimeout.value = formTime.value;
