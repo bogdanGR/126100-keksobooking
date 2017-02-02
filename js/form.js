@@ -22,45 +22,44 @@ var changeAria = function (element) {
     element.setAttribute('aria-pressed', !pressed);
   }
 };
-var isActivateEvent = function (evt) {
-  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
-};
-pinMap.addEventListener('keydown', function (evt) {
-  if (isActivateEvent(evt)) {
-    var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
-
-    disableActivePin();
-    element.classList.add('pin--active');
-    dialog.style.display = 'block';
-  }
-});
-
 var disableActivePin = function () {
   var activePinNode = document.querySelector('.pin--active');
   if (activePinNode) {
     activePinNode.classList.remove('pin--active');
   }
 };
-pinMap.addEventListener('click', function (evt) {
+
+var activatePin = function (evt) {
   var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
 
   disableActivePin();
   element.classList.add('pin--active');
   dialog.style.display = 'block';
-});
+};
+
+var isActivateEvent = function (evt) {
+  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
+};
+
+var keyActivatePin = function (evt) {
+  if (isActivateEvent(evt)) {
+    activatePin(evt);
+  }
+};
 
 var closeDialog = function () {
   dialog.style.display = 'none';
   disableActivePin();
   changeAria(disableDialog);
 };
-disableDialog.addEventListener('click', closeDialog);
-
 disableDialog.addEventListener('keydown', function (evt) {
   if (isActivateEvent(evt)) {
     closeDialog();
   }
 });
+pinMap.addEventListener('click', activatePin);
+pinMap.addEventListener('keydown', keyActivatePin);
+disableDialog.addEventListener('click', closeDialog);
 
 formTime.addEventListener('change', function () {
   formTimeout.value = formTime.value;
