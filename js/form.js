@@ -1,6 +1,6 @@
 'use strict';
 
-var pins = document.querySelectorAll('.pin');
+var pinMap = document.querySelector('.tokyo__pin-map');
 var dialog = document.querySelector('.dialog');
 var disableDialog = dialog.querySelector('.dialog__close');
 
@@ -14,29 +14,51 @@ var formType = noticeForm.querySelector('#type');
 var formRoomNumber = noticeForm.querySelector('#room_number');
 var formCapacity = noticeForm.querySelector('#capacity');
 
+var ENTER_KEY_CODE = 13;
+
+var changeAria = function (element) {
+  var pressed = (element.getAttribute('aria-pressed') === 'true');
+  if (!pressed) {
+    element.setAttribute('aria-pressed', !pressed);
+  }
+};
 var disableActivePin = function () {
   var activePinNode = document.querySelector('.pin--active');
   if (activePinNode) {
     activePinNode.classList.remove('pin--active');
   }
 };
-var activePin = function (pin) {
+
+var activatePin = function (evt) {
+  var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
+
   disableActivePin();
-  pin.classList.add('pin--active');
+  element.classList.add('pin--active');
   dialog.style.display = 'block';
 };
 
-for (var i = 0; i < pins.length; i++) {
-  pins[i].addEventListener('click', function (e) {
-    activePin(e.currentTarget);
-  });
-}
+var isActivateEvent = function (evt) {
+  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
+};
+
+var keyActivatePin = function (evt) {
+  if (isActivateEvent(evt)) {
+    activatePin(evt);
+  }
+};
 
 var closeDialog = function () {
   dialog.style.display = 'none';
   disableActivePin();
+  changeAria(disableDialog);
 };
-
+disableDialog.addEventListener('keydown', function (evt) {
+  if (isActivateEvent(evt)) {
+    closeDialog();
+  }
+});
+pinMap.addEventListener('click', activatePin);
+pinMap.addEventListener('keydown', keyActivatePin);
 disableDialog.addEventListener('click', closeDialog);
 
 formTime.addEventListener('change', function () {
