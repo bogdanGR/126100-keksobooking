@@ -1,79 +1,26 @@
 'use strict';
-
-var pinMap = document.querySelector('.tokyo__pin-map');
-var dialog = document.querySelector('.dialog');
-var disableDialog = dialog.querySelector('.dialog__close');
-
 var noticeForm = document.querySelector('.notice__form');
-var formTitle = noticeForm.querySelector('#title');
-var formPrice = noticeForm.querySelector('#price');
-var formAddress = noticeForm.querySelector('#address');
+
 var formTime = noticeForm.querySelector('#time');
 var formTimeout = noticeForm.querySelector('#timeout');
+
 var formType = noticeForm.querySelector('#type');
+var formPrice = noticeForm.querySelector('#price');
+
 var formRoomNumber = noticeForm.querySelector('#room_number');
 var formCapacity = noticeForm.querySelector('#capacity');
 
-var ENTER_KEY_CODE = 13;
 
-var changeAria = function (element) {
-  var pressed = (element.getAttribute('aria-pressed') === 'true');
-  if (!pressed) {
-    element.setAttribute('aria-pressed', !pressed);
-  }
-};
-var disableActivePin = function () {
-  var activePinNode = document.querySelector('.pin--active');
-  if (activePinNode) {
-    activePinNode.classList.remove('pin--active');
-  }
-};
+var formTitle = noticeForm.querySelector('#title');
+var formAddress = noticeForm.querySelector('#address');
 
-var activatePin = function (evt) {
-  var element = evt.target.classList.contains('pin') ? evt.target : evt.target.parentElement;
+window.initializePins();
 
-  disableActivePin();
-  element.classList.add('pin--active');
-  dialog.style.display = 'block';
-};
+window.synchronizeFields(formTime, formTimeout, ['12', '13', '14'], ['12', '13', '14'], 'value');
+window.synchronizeFields(formTimeout, formTime, ['12', '13', '14'], ['12', '13', '14'], 'value');
+window.synchronizeFields(formType, formPrice, ['1000', '0', '10000'], ['1000', '0', '10000'], 'min');
+window.synchronizeFields(formRoomNumber, formCapacity, ['1', '2', '100'], ['0', '3', '3'], 'value');
 
-var isActivateEvent = function (evt) {
-  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
-};
-
-var keyActivatePin = function (evt) {
-  if (isActivateEvent(evt)) {
-    activatePin(evt);
-  }
-};
-
-var closeDialog = function () {
-  dialog.style.display = 'none';
-  disableActivePin();
-  changeAria(disableDialog);
-};
-disableDialog.addEventListener('keydown', function (evt) {
-  if (isActivateEvent(evt)) {
-    closeDialog();
-  }
-});
-pinMap.addEventListener('click', activatePin);
-pinMap.addEventListener('keydown', keyActivatePin);
-disableDialog.addEventListener('click', closeDialog);
-
-formTime.addEventListener('change', function () {
-  formTimeout.value = formTime.value;
-});
-formTimeout.addEventListener('change', function () {
-  formTime.value = formTimeout.value;
-});
-
-formType.addEventListener('change', function () {
-  formPrice.min = formType.value;
-});
-formRoomNumber.addEventListener('change', function () {
-  formCapacity.value = +formRoomNumber.value === 2 || +formRoomNumber.value === 100 ? 3 : 0;
-});
 
 formTitle.required = true;
 formTitle.minLength = 30;
