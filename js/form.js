@@ -17,14 +17,18 @@
   var formTitle = noticeForm.querySelector('#title');
   var formAddress = noticeForm.querySelector('#address');
 
+  // загружаем данные
+  window.initializePins.loadData();
+
   var onPinKeyDown = function (evt) {
     if (window.utils.isActivateEvent(evt)) {
       var currentPin = evt.target;
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
         currentPin.classList.add('pin--active');
+        window.utils.changeAria(currentPin);
 
-        window.showCard(function () {
+        window.showCard(currentPin.data, function () {
           window.initializePins.disableActivePin();
           // возвращаем фокус на пин с которого ушли
           currentPin.focus();
@@ -34,8 +38,9 @@
   };
   var activatePin = function (evt) {
     var closest = window.utils.getClosestElement(evt.target, 'pin', 'tokyo__pin-map');
-    window.showCard(function () {
+    window.showCard(closest.data, function () {
       window.initializePins.disableActivePin();
+      window.utils.changeAria(closest);
     });
     // проверим что нажатие действительно произошло на pin
     if (closest) {
