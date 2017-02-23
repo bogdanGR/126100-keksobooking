@@ -63,7 +63,7 @@ window.initializePins = (function () {
     return (checkedFeatures.length === 0) || (checkedFeatures.every(CheckFeatures));
   };
   // window поставил на время, т.к пока эту функцию нигде не использую
-  window.callbackFilterApartments = function (item) {
+  var filterApartments = function (item) {
     return isInRangeType(item) &&
       isInRangePrice(item) &&
       isInRangeRooms(item) &&
@@ -77,7 +77,29 @@ window.initializePins = (function () {
       renderData();
     });
   };
+  // Удаление меток на карте и скрытие карточки жилья, если она была открыта
+  var clearMap = function () {
+    window.closeDialog();
 
+    var pins = tokyo.querySelectorAll('.pin');
+
+    pins.forEach(function (item) {
+      if (!item.classList.contains('pin__main')) {
+        tokyo.removeChild(item);
+      }
+    });
+  };
+
+  // Обновление меток при изменении значений в фильтре
+  formFilters.addEventListener('change', function () {
+    clearMap();
+    similarApartments.filter(filterApartments).forEach(renderPin);
+  });
+  // Отображение метки согласно загруженным данным
+  var renderPin = function (data) {
+    var newPin = window.render(data);
+    tokyo.appendChild(newPin);
+  };
   var renderData = function () {
     var slicedArr = similarApartments.slice(0, 3);
 
