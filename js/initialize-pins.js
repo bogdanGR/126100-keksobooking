@@ -12,7 +12,8 @@ window.initializePins = (function () {
   var housingPrice = formFilters.querySelector('#housing_price');
   var filterRooms = formFilters.querySelector('#housing_room-number');
   var filterGuests = formFilters.querySelector('#housing_guests-number');
-  var filterFeatures = formFilters.querySelector('#housing_features').querySelectorAll('input[type=checkbox]');
+  var filtersContainer = formFilters.querySelector('#housing_features');
+  var filterFeatures = filtersContainer.querySelectorAll('input[type=checkbox]');
 
   var ANY_VALUE = 'any';
   var MIN_MIDDLE_PRICE_VALUE = 1000;
@@ -56,13 +57,12 @@ window.initializePins = (function () {
     var checkedFeatures = [].filter.call(filterFeatures, isFeatureChecked).map(getNameFeature);
     var apartmentFeatures = dataApartment.offer.features;
 
-    var CheckFeatures = function (feature) {
+    var checkFeatures = function (feature) {
       return apartmentFeatures.indexOf(feature) !== -1;
     };
 
-    return (checkedFeatures.length === 0) || (checkedFeatures.every(CheckFeatures));
+    return (checkedFeatures.length === 0) || (checkedFeatures.every(checkFeatures));
   };
-  // window поставил на время, т.к пока эту функцию нигде не использую
   var filterApartments = function (item) {
     return isInRangeType(item) &&
       isInRangePrice(item) &&
@@ -74,9 +74,10 @@ window.initializePins = (function () {
   var loadData = function () {
     window.load(DATA_URL, function (data) {
       similarApartments = data;
-      renderData();
+      renderData(similarApartments.filter(filterApartments));
     });
   };
+
   // Удаление меток на карте и скрытие карточки жилья, если она была открыта
   var clearMap = function () {
     window.closeDialog();
@@ -89,25 +90,73 @@ window.initializePins = (function () {
       }
     });
   };
-
   // Обновление меток при изменении значений в фильтре
   formFilters.addEventListener('change', function () {
     clearMap();
-    similarApartments.filter(filterApartments).forEach(renderPin);
+    renderData(similarApartments.filter(filterApartments));
   });
-  // Отображение метки согласно загруженным данным
-  var renderPin = function (data) {
-    var newPin = window.render(data);
-    tokyo.appendChild(newPin);
-  };
-  var renderData = function () {
-    var slicedArr = similarApartments.slice(0, 3);
 
-    slicedArr.forEach(function (item) {
+  var renderData = function (arr) {
+    var fired = [];
+
+    arr.forEach(function (item) {
       fragment.appendChild(window.render(item));
+
+      if (fired.length > 0) {
+        fired = intersection(fired, item.offer.features);
+      } else {
+        fired = item.offer.features;
+      }
     });
 
+    // убираем все активные чекбоксы
+    if (filterFeatures.length > 0) {
+      for (var i = 0; i < filterFeatures.length; i++) {
+        filterFeatures[i].checked = false;
+      }
+    }
+
+    // ставим новые
+    if (fired.length > 0) {
+      fired.forEach(function (item) {
+        var filterBox = filtersContainer.querySelector('input[value=' + item + ']');
+        if (filterBox !== null) {
+          filterBox.checked = true;
+        }
+      });
+      formFilters.addEventListener('click', function () {
+        if (fired) {
+          fired.checked = false;
+          // console.log(fired.checked = false);
+        }
+      });
+      // if (fired.length > 0) {
+      //   fired.forEach(function (item) {
+      //     if (isChecked !== null) {
+      //       console.log(isChecked);
+      //       isChecked.checked = false;
+      //     }
+      //   });
+      // }
+    }
+
     tokyo.appendChild(fragment);
+  };
+
+  // formFilters.addEventListener('click', function () {
+  //   var filterBox = filtersContainer.querySelector('input[value=' + filterFeatures + ']');
+  //   if (filterBox) {
+  //     for (var i = 0; i < filterFeatures.length; i++) {
+  //       var unchecked = filterFeatures[i].checked = false;
+  //     }
+  //   }
+  //   renderData(unchecked);
+  // });
+  // пересечение массивов
+  var intersection = function (a1, a2) {
+    return a1.filter(function (x) {
+      return a2.indexOf(x) > -1;
+    });
   };
 
   return {
@@ -117,7 +166,7 @@ window.initializePins = (function () {
     // функция дизактивации активного пина
     disableActivePin: function () {
       var activePinNode = document.querySelector('.pin--active');
-      if (activePinNode) {
+      if (activePinNode !== null) {
         activePinNode.classList.remove('pin--active');
       }
     },
