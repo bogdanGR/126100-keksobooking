@@ -1,9 +1,7 @@
 'use strict';
 
 window.utils = (function () {
-
   var ENTER_KEY_CODE = 13;
-  var ESCAPE_KEY_CODE = 27;
 
   return {
     // поиск ближайшего элемента с селектором
@@ -13,11 +11,10 @@ window.utils = (function () {
       }
       return elem;
     },
-
     // смена свойства нажатой кнопки
     changeAria: function (element) {
       var pressed = (element.getAttribute('aria-pressed') === 'true');
-      if (!pressed) {
+      if (!pressed !== null) {
         element.setAttribute('aria-pressed', !pressed);
       }
     },
@@ -25,11 +22,6 @@ window.utils = (function () {
     // нажата клавиша Enter
     isActivateEvent: function (evt) {
       return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
-    },
-
-    // нажата клавиша ESC
-    isDeactivationEvent: function (evt) {
-      return evt.keyCode && evt.keyCode === ESCAPE_KEY_CODE;
-    },
+    }
   };
 })();

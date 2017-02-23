@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var pinMap = document.querySelector('.tokyo__pin-map');
 
@@ -21,7 +22,7 @@
   window.initializePins.loadData();
 
   var onPinKeyDown = function (evt) {
-    if (window.utils.isActivateEvent(evt)) {
+    if (window.utils.isActivateEvent(evt) !== null) {
       var currentPin = evt.target;
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
@@ -43,7 +44,7 @@
       window.utils.changeAria(closest);
     });
     // проверим что нажатие действительно произошло на pin
-    if (closest) {
+    if (closest !== null) {
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
         closest.classList.add('pin--active');

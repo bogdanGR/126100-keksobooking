@@ -1,7 +1,6 @@
 'use strict';
 
 window.showCard = (function () {
-
   var onDialogClose = null;
   var tokyoElement = document.querySelector('.tokyo');
   var dialogTemplate = document.querySelector('#dialog-template');
@@ -21,7 +20,7 @@ window.showCard = (function () {
 
   // Скрываем диалоговое окно по умолчанию
   dialogClone.style.display = 'none';
-
+  // Открываем диалог с данными выбраного пина
   var openDialog = function (data) {
     dialogClone.style.display = 'block';
 
@@ -63,9 +62,9 @@ window.showCard = (function () {
       onDialogClose();
     }
   };
-
+  // открытия диалога с клавиатуры
   var onKeyDown = function (evt) {
-    if (window.utils.isActivateEvent(evt)) {
+    if (window.utils.isActivateEvent(evt) !== null) {
       window.closeDialog(evt);
     }
   };

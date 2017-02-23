@@ -1,4 +1,5 @@
 'use strict';
+// копируем шаблон, добавляем пины с данными
 window.render = (function () {
   var templateElement = document.querySelector('#pin-template');
   var elementToClone = templateElement.content.querySelector('.element-to-clone');

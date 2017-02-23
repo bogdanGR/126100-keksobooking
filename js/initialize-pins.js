@@ -70,7 +70,7 @@ window.initializePins = (function () {
       isInRangeGuests(item) &&
       isInRangeFeatures(item);
   };
-
+   // грузим данные с сервера
   var loadData = function () {
     window.load(DATA_URL, function (data) {
       similarApartments = data;
@@ -124,34 +124,10 @@ window.initializePins = (function () {
           filterBox.checked = true;
         }
       });
-      formFilters.addEventListener('click', function () {
-        if (fired) {
-          fired.checked = false;
-          // console.log(fired.checked = false);
-        }
-      });
-      // if (fired.length > 0) {
-      //   fired.forEach(function (item) {
-      //     if (isChecked !== null) {
-      //       console.log(isChecked);
-      //       isChecked.checked = false;
-      //     }
-      //   });
-      // }
     }
 
     tokyo.appendChild(fragment);
   };
-
-  // formFilters.addEventListener('click', function () {
-  //   var filterBox = filtersContainer.querySelector('input[value=' + filterFeatures + ']');
-  //   if (filterBox) {
-  //     for (var i = 0; i < filterFeatures.length; i++) {
-  //       var unchecked = filterFeatures[i].checked = false;
-  //     }
-  //   }
-  //   renderData(unchecked);
-  // });
   // пересечение массивов
   var intersection = function (a1, a2) {
     return a1.filter(function (x) {
