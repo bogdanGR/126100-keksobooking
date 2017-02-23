@@ -22,7 +22,7 @@
   window.initializePins.loadData();
 
   var onPinKeyDown = function (evt) {
-    if (window.utils.isActivateEvent(evt) !== null) {
+    if (window.utils.isActivateEvent(evt)) {
       var currentPin = evt.target;
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
@@ -41,13 +41,13 @@
     var closest = window.utils.getClosestElement(evt.target, 'pin', 'tokyo__pin-map');
     window.showCard(closest.data, function () {
       window.initializePins.disableActivePin();
-      window.utils.changeAria(closest);
     });
     // проверим что нажатие действительно произошло на pin
     if (closest !== null) {
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
         closest.classList.add('pin--active');
+        window.utils.changeAria(closest);
       });
     }
   };

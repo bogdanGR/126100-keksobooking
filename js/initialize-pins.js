@@ -97,44 +97,11 @@ window.initializePins = (function () {
   });
 
   var renderData = function (arr) {
-    var fired = [];
-
     arr.forEach(function (item) {
       fragment.appendChild(window.render(item));
-
-      if (fired.length > 0) {
-        fired = intersection(fired, item.offer.features);
-      } else {
-        fired = item.offer.features;
-      }
     });
-
-    // убираем все активные чекбоксы
-    if (filterFeatures.length > 0) {
-      for (var i = 0; i < filterFeatures.length; i++) {
-        filterFeatures[i].checked = false;
-      }
-    }
-
-    // ставим новые
-    if (fired.length > 0) {
-      fired.forEach(function (item) {
-        var filterBox = filtersContainer.querySelector('input[value=' + item + ']');
-        if (filterBox !== null) {
-          filterBox.checked = true;
-        }
-      });
-    }
-
     tokyo.appendChild(fragment);
   };
-  // пересечение массивов
-  var intersection = function (a1, a2) {
-    return a1.filter(function (x) {
-      return a2.indexOf(x) > -1;
-    });
-  };
-
   return {
     showPin: function (cb) {
       cb();
