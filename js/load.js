@@ -1,6 +1,6 @@
 'use strict';
+// делаем запрос к серверу
 window.load = (function () {
-
   var errorHandler = function (err) {
     return err;
   };
