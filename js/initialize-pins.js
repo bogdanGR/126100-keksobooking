@@ -74,7 +74,8 @@ window.initializePins = (function () {
   var loadData = function () {
     window.load(DATA_URL, function (data) {
       similarApartments = data;
-      renderData(similarApartments.filter(filterApartments));
+      var slicedArr = similarApartments.slice(0, 3);
+      renderData(slicedArr);
     });
   };
 
