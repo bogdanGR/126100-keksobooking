@@ -26,9 +26,10 @@
       var currentPin = evt.target;
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        currentPin.classList.add('pin--active');
-        window.utils.changeAria(currentPin);
-
+        if (!currentPin.classList.contains('pin--active') !== null) {
+          currentPin.classList.add('pin--active');
+          window.utils.changeAria(currentPin);
+        }
         window.showCard(currentPin.data, function () {
           window.initializePins.disableActivePin();
           // возвращаем фокус на пин с которого ушли
@@ -37,7 +38,7 @@
       });
     }
   };
-  var activatePin = function (evt) {
+  var onActivatePinClick = function (evt) {
     var closest = window.utils.getClosestElement(evt.target, 'pin', 'tokyo__pin-map');
     window.showCard(closest.data, function () {
       window.initializePins.disableActivePin();
@@ -46,14 +47,16 @@
     if (closest !== null) {
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        closest.classList.add('pin--active');
-        window.utils.changeAria(closest);
+        if (!closest.classList.contains('pin--active') !== null) {
+          closest.classList.add('pin--active');
+          window.utils.changeAria(closest);
+        }
       });
     }
   };
   // обработчик клика по карте
   pinMap.addEventListener('keydown', onPinKeyDown);
-  pinMap.addEventListener('click', activatePin);
+  pinMap.addEventListener('click', onActivatePinClick);
 
   window.synchronizeFields(formTime, formTimeout, ['12', '13', '14'], ['12', '13', '14'], 'value', function (val) {
     formTimeout.value = val;
