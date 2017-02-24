@@ -14,9 +14,9 @@ window.utils = (function () {
     // смена свойства нажатой кнопки
     changeAria: function (element) {
       var pressed = (element.getAttribute('aria-pressed') === 'true');
-      if (!pressed !== null) {
-        element.setAttribute('aria-pressed', !pressed);
-      }
+
+      element.setAttribute('aria-pressed', !pressed);
+
     },
 
     // нажата клавиша Enter

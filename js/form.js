@@ -46,8 +46,8 @@
     if (closest !== null) {
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        closest.classList.add('pin--active');
         if (!closest.classList.contains('pin--active')) {
+          closest.classList.add('pin--active');
           window.utils.changeAria(closest);
         }
       });
