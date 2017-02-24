@@ -81,7 +81,7 @@ window.initializePins = (function () {
 
   // Удаление меток на карте и скрытие карточки жилья, если она была открыта
   var clearMap = function () {
-    window.closeDialog();
+    window.onCloseDialogClick();
 
     var pins = tokyo.querySelectorAll('.pin');
 
