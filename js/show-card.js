@@ -53,7 +53,7 @@ window.showCard = (function () {
     tokyoElement.appendChild(dialogClone);
   };
   // фунция закрытия диалога
-  window.onCloseDialogClick = function (evt) {
+  window.onCloseDialogClick = function () {
     dialogClone.style.display = 'none';
     window.utils.changeAria(disableDialog);
     disableDialog.removeEventListener('keydown', onKeyDown);
