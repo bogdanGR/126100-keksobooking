@@ -26,9 +26,10 @@
       var currentPin = evt.target;
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        currentPin.classList.add('pin--active');
-        window.utils.changeAria(currentPin);
-
+        if (!currentPin.classList.contains('pin--active') !== null) {
+          currentPin.classList.add('pin--active');
+          window.utils.changeAria(currentPin);
+        }
         window.showCard(currentPin.data, function () {
           window.initializePins.disableActivePin();
           // возвращаем фокус на пин с которого ушли
@@ -46,7 +47,7 @@
     if (closest !== null) {
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        if (!closest.classList.contains('pin--active')) {
+        if (!closest.classList.contains('pin--active') !== null) {
           closest.classList.add('pin--active');
           window.utils.changeAria(closest);
         }

@@ -13,8 +13,14 @@ window.utils = (function () {
     },
     // смена свойства нажатой кнопки
     changeAria: function (element) {
-      var pressed = (element.getAttribute('aria-pressed') === 'true');
+      var pins = document.querySelectorAll('.pin:not(.pin__main)');
 
+      if (pins.length > 0) {
+        for (var i = 0; i < pins.length; i++) {
+          pins[i].setAttribute('aria-pressed', 'false');
+        }
+      }
+      var pressed = (element.getAttribute('aria-pressed') === 'true');
       element.setAttribute('aria-pressed', !pressed);
 
     },
