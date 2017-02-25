@@ -26,7 +26,7 @@
       var currentPin = evt.target;
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        if (!currentPin.classList.contains('pin--active') !== null) {
+        if (currentPin !== null && !currentPin.classList.contains('pin--active')) {
           currentPin.classList.add('pin--active');
           window.utils.changeAria(currentPin);
         }
@@ -40,17 +40,17 @@
   };
   var onActivatePinClick = function (evt) {
     var closest = window.utils.getClosestElement(evt.target, 'pin', 'tokyo__pin-map');
-    window.showCard(closest.data, function () {
-      window.initializePins.disableActivePin();
-    });
-    // проверим что нажатие действительно произошло на pin
-    if (closest !== null) {
+    // проверим что нажатие действительно произошло на pin и не на main__pin
+    if (closest !== null && !closest.classList.contains('pin__main')) {
       window.initializePins.showPin(function () {
         window.initializePins.disableActivePin();
-        if (!closest.classList.contains('pin--active') !== null) {
+        if (closest !== null && !closest.classList.contains('pin--active')) {
           closest.classList.add('pin--active');
           window.utils.changeAria(closest);
         }
+      });
+      window.showCard(closest.data, function () {
+        window.initializePins.disableActivePin();
       });
     }
   };
@@ -58,19 +58,19 @@
   pinMap.addEventListener('keydown', onPinKeyDown);
   pinMap.addEventListener('click', onActivatePinClick);
 
-  window.synchronizeFields(formTime, formTimeout, ['12', '13', '14'], ['12', '13', '14'], 'value', function (val) {
+  window.synchronizeFields(formTime, formTimeout, ['12', '13', '14'], ['12', '13', '14'], function (val) {
     formTimeout.value = val;
   });
-  window.synchronizeFields(formTimeout, formTime, ['12', '13', '14'], ['12', '13', '14'], 'value', function (val) {
+  window.synchronizeFields(formTimeout, formTime, ['12', '13', '14'], ['12', '13', '14'], function (val) {
     formTime.value = val;
   });
-  window.synchronizeFields(formType, formPrice, ['1000', '0', '10000'], ['1000', '0', '10000'], 'min', function (val) {
+  window.synchronizeFields(formType, formPrice, ['1000', '0', '10000'], ['1000', '0', '10000'], function (val) {
     formPrice.min = val;
   });
-  window.synchronizeFields(formRoomNumber, formCapacity, ['1', '2', '100'], ['0', '3', '3'], 'value', function (val) {
+  window.synchronizeFields(formRoomNumber, formCapacity, ['1', '2', '100'], ['0', '3', '3'], function (val) {
     formCapacity.value = val;
   });
-  window.synchronizeFields(formCapacity, formRoomNumber, ['0', '3', '3'], ['1', '2', '100'], 'value', function (val) {
+  window.synchronizeFields(formCapacity, formRoomNumber, ['0', '3', '3'], ['1', '2', '100'], function (val) {
     formRoomNumber.value = val;
   });
 
