@@ -16,8 +16,8 @@ window.initializePins = (function () {
   var filterFeatures = filtersContainer.querySelectorAll('input[type=checkbox]');
 
   var ANY_VALUE = 'any';
-  var MIN_MIDDLE_PRICE_VALUE = 1000;
-  var MAX_MIDDLE_PRICE_VALUE = 1000000;
+  var MIN_PRICE_VALUE = 10000;
+  var MAX_PRICE_VALUE = 50000;
 
   var isInRangeType = function (dataApartment) {
     return (filterType.value === ANY_VALUE) || (filterType.value === dataApartment.offer.type);
@@ -27,11 +27,11 @@ window.initializePins = (function () {
   var isInRangePrice = function (item) {
     switch (housingPrice.value) {
       case 'low':
-        return item.offer.price < MIN_MIDDLE_PRICE_VALUE;
+        return item.offer.price < MIN_PRICE_VALUE;
       case 'middle':
-        return item.offer.price >= 1000 && item.offer.price <= MAX_MIDDLE_PRICE_VALUE;
+        return item.offer.price >= MIN_PRICE_VALUE && item.offer.price <= MAX_PRICE_VALUE;
       case 'hight':
-        return item.offer.price > MAX_MIDDLE_PRICE_VALUE;
+        return item.offer.price > MAX_PRICE_VALUE;
     }
     return false;
   };
@@ -85,11 +85,11 @@ window.initializePins = (function () {
 
     var pins = tokyo.querySelectorAll('.pin');
 
-    pins.forEach(function (item) {
-      if (!item.classList.contains('pin__main')) {
-        tokyo.removeChild(item);
+    for (var i = 0; i < pins.length; i++) {
+      if (!pins[i].classList.contains('pin__main')) {
+        tokyo.removeChild(pins[i]);
       }
-    });
+    }
   };
   // Обновление меток при изменении значений в фильтре
   formFilters.addEventListener('change', function () {

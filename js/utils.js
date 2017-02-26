@@ -13,21 +13,17 @@ window.utils = (function () {
     },
     // смена свойства нажатой кнопки
     changeAria: function (element) {
-      var pins = document.querySelectorAll('.pin:not(.pin__main)');
-
-      if (pins.length > 0) {
-        for (var i = 0; i < pins.length; i++) {
-          pins[i].setAttribute('aria-pressed', 'false');
-        }
+      var tokyoMap = document.querySelector('.tokyo__pin-map');
+      var pin = tokyoMap.querySelector('.pin[aria-pressed=true]');
+      if (pin !== null) {
+        pin.setAttribute('aria-pressed', 'false');
       }
-      var pressed = (element.getAttribute('aria-pressed') === 'true');
-      element.setAttribute('aria-pressed', !pressed);
-
+      var pressed = !(element.getAttribute('aria-pressed') === 'true');
+      element.setAttribute('aria-pressed', pressed.toString());
     },
-
     // нажата клавиша Enter
     isActivateEvent: function (evt) {
-      return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
+      return evt && evt.keyCode === ENTER_KEY_CODE;
     }
   };
 })();
