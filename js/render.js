@@ -12,7 +12,7 @@ window.render = (function () {
     pinAvatar.src = data.author.avatar;
     newElement.style.left = data.location.x - PIN_WIDTH / 2 + 'px';
     newElement.style.top = data.location.y - PIN_HEIGHT + 'px';
-    newElement.setAttribute('tabindex', 0);
+    newElement.setAttribute('tabindex', '0');
     newElement.data = data;
 
     return newElement;

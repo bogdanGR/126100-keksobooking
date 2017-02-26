@@ -65,7 +65,7 @@ window.showCard = (function () {
   // открытия диалога с клавиатуры
   var onKeyDown = function (evt) {
     if (window.utils.isActivateEvent(evt)) {
-      window.closeDialog(evt);
+      window.onCloseDialogClick();
     }
   };
 
